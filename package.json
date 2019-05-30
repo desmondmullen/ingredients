@@ -2,6 +2,7 @@
   "name": "ingredients",
   "version": "0.1.0",
   "scripts": {
+    "start": "cd server/ && npm run start",
     "postinstall": "npm install --prefix server && npm install --prefix client"
   }
 }
