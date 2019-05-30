@@ -13,7 +13,6 @@
     "test": "mocha",
     "install": "cd client && npm install",
     "build": "cd client && npm run build",
-    "heroku-postbuild": "npm run build",
     "cy:run": "cypress run",
     "start-and-test": "start-server-and-test start http://localhost:3001 cy:run"
   },
