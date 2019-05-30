@@ -2,6 +2,9 @@
   "name": "ingredients",
   "version": "0.1.0",
   "scripts": {
-    "start": "cd server && npm run start"
+    "start": "if-env NODE_ENV=production && cd server && npm run start:prod || cd server && npm run start:dev"
+  },
+  "dependencies": {
+    "if-env": "^1.0.4"
   }
 }
