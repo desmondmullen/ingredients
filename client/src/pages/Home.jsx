@@ -20,9 +20,15 @@ class Home extends Component {
                     console.log('no result');
                     document.getElementById('result').innerText = 'no result';
                 } else {
+                    console.log(result.data.foods[ 0 ].food.nutrients);
+                    const theNutrients = result.data.foods[ 0 ].food.nutrients;
+                    let theNutrientList = '<strong>Per ' + theNutrients[ 0 ].measures[ 0 ].qty + ' ' + theNutrients[ 0 ].measures[ 0 ].label + '</strong><br />';
+                    for (let i = 0; i < theNutrients.length; i++) {
+                        theNutrientList += theNutrients[ i ].name + ' ' + theNutrients[ i ].value + theNutrients[ i ].unit + '<br />';
+                    }
                     const theName = result.data.foods[ 0 ].food.desc.name + ' ' + result.data.foods[ 0 ].food.desc.manu;
                     const theIngredients = result.data.foods[ 0 ].food.ing.desc;
-                    document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients
+                    document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients + '<br /><br />' + theNutrientList;
                     let theAlertHits = [];
                     for (let i = 0; i < theIngredients.length; i++) {
                         if (theIngredients.indexOf(theAlerts[ i ]) > 0) {
@@ -68,12 +74,12 @@ class Home extends Component {
                 <br />
                 <strong>Barcode:</strong> <input id='query' defaultValue='00014885'></input>
                 <br />
-                <strong>Watch for:</strong> <input id='alert' defaultValue='salt'></input>
+                <strong>Watch for:</strong> <input id='alert' defaultValue='onion'></input>
                 <br />
                 <button onClick={ this.queryUSDA }>Search</button>
                 <br />
-                <div id='result' width='100%'></div>
                 <br />
+                <div id='result' width='100%'></div>
                 <br />
                 <br />
                 <strong>Examples:</strong>
