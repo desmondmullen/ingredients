@@ -296,6 +296,7 @@ $(function () {
             $node.find("h4.code").html(code);
             $("#result_strip ul.thumbnails").prepend($node);
             $("#query").val(code);
+            $("#container").css('display', 'none');
         }
     });
 

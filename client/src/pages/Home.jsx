@@ -10,6 +10,10 @@ class Home extends Component {
         };
     };
 
+    barcodeChange = () => {
+        alert('woo');
+    }
+
     queryUSDA = () => {
         document.getElementById('result').innerText = 'searching...';
         const theQuery = document.getElementById('query').value;
@@ -69,20 +73,18 @@ class Home extends Component {
     render () {
         return (
             <div>
-                <section id="container" class="container">
-                    <div class="controls">
-                        <fieldset class="input-group">
-                            <button class="stop">Stop</button>
-                        </fieldset>
-                    </div>
+                <section id="container" className="container">
+                    {/* <div className="controls">
+                        <fieldset className="input-group"> */}
+                    {/* <button className="stop">Stop</button> */ }
+                    {/* </fieldset>
+                    </div> */}
                     <div id="result_strip">
-                        <ul class="thumbnails"></ul>
-                        <ul class="collector"></ul>
+                        <ul className="thumbnails"></ul>
+                        <ul className="collector"></ul>
                     </div>
-                    <div id="interactive" class="viewport"></div>
+                    <div id="interactive" className="viewport"></div>
                 </section>
-                <br />
-                <br />
                 <strong>Barcode:</strong> <input id='query' defaultValue='00014885'></input>
                 <br />
                 <strong>Watch for:</strong> <input id='alert' defaultValue='onion'></input>
