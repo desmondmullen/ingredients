@@ -69,7 +69,18 @@ class Home extends Component {
     render () {
         return (
             <div>
-                <input type="file" accept="image/*" capture="camera" />
+                <section id="container" class="container">
+                    <div class="controls">
+                        <fieldset class="input-group">
+                            <button class="stop">Stop</button>
+                        </fieldset>
+                    </div>
+                    <div id="result_strip">
+                        <ul class="thumbnails"></ul>
+                        <ul class="collector"></ul>
+                    </div>
+                    <div id="interactive" class="viewport"></div>
+                </section>
                 <br />
                 <br />
                 <strong>Barcode:</strong> <input id='query' defaultValue='00014885'></input>
