@@ -121,3 +121,28 @@ canvas.drawingBuffer {
 video {
   width: 100%;
 }
+
+button {
+  font-size: medium;
+}
+
+#scan, #cancel {
+  background-color: #4CAF50;
+  /* Green */
+  border: none;
+  color: white;
+  padding: 0.6% 1%;
+  /* text-align: center; */
+  text-decoration: none;
+  /* display: inline-block; */
+  font-size: large;
+  font-weight: bold;
+}
+
+#cancel {
+  background-color: gray;
+}
+
+input {
+  font-size: medium;
+}

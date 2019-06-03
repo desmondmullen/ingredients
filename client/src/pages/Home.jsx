@@ -76,11 +76,12 @@ class Home extends Component {
                 <section id="container" className="container">
                     <div id="interactive" className="viewport"></div>
                 </section>
-                <strong>Barcode:</strong> <input id='query' onClick={ this.barcodeChange } defaultValue='00014885'></input>
+                <button id='scan'>Scan</button> <button id='cancel'>Cancel</button>
+                <br />
+                <br />
+                <strong>Barcode:</strong> <input id='query' onClick={ this.barcodeChange } defaultValue='00014885'></input> <button onClick={ this.queryUSDA }>Search</button>
                 <br />
                 <strong>Watch for:</strong> <input id='alert' defaultValue='onion'></input>
-                <br />
-                <button onClick={ this.queryUSDA }>Search</button>
                 <br />
                 <br />
                 <div id='result' width='100%'></div>
@@ -88,13 +89,7 @@ class Home extends Component {
                 <br />
                 <strong>Examples:</strong>
                 <br />
-                <button onClick={ this.granola }>Granola</button>
-                <br />
-                <button onClick={ this.bread }>Bread</button>
-                <br />
-                <button onClick={ this.soup }>Soup</button>
-                <br />
-                <button onClick={ this.cornbread }>Cornbread</button>
+                <button onClick={ this.granola }>Granola</button> <button onClick={ this.bread }>Bread</button> <button onClick={ this.soup }>Soup</button> <button onClick={ this.cornbread }>Cornbread</button>
             </div>
         );
     }
