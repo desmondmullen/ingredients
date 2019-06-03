@@ -51,17 +51,23 @@ class Home extends Component {
     };
 
     reload_js = () => {
-        console.log('reloading');
-        document.getElementById('scanner-script').remove();
-
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        // script.src = "live_w_locator.js";
-        script.src = "https://desmondmullen.com/static/live_w_locator.js";
-        script.id = "scanner-script"
-        document.head.appendChild(script);
-        const theContainer = document.getElementById("container");
-        theContainer.style.display = 'block';
+        try {
+            document.getElementById('scanner-script').remove();
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+        finally {
+            console.log('reloading');
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            // script.src = "live_w_locator.js";
+            script.src = "https://desmondmullen.com/static/live_w_locator.js";
+            script.id = "scanner-script"
+            document.head.appendChild(script);
+            const theContainer = document.getElementById("container");
+            theContainer.style.display = 'block';
+        }
     }
 
     granola = () => {
