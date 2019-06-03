@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './js/require';
 import './js/adapter-latest';
 import './js/live_w_locator';
 import './js/quagga';
