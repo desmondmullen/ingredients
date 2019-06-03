@@ -104,10 +104,6 @@ class Home extends Component {
                 <button onClick={ this.soup }>Soup</button>
                 <br />
                 <button onClick={ this.cornbread }>Cornbread</button>
-                <br />
-                <script src="js/adapter-latest.js" type="text/javascript"></script>
-                <script src="js/quagga.js" type="text/javascript"></script>
-                <script src="js/live_w_locator.js" type="text/javascript"></script>
             </div>
         );
     }
