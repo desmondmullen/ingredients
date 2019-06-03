@@ -74,15 +74,6 @@ class Home extends Component {
         return (
             <div>
                 <section id="container" className="container">
-                    {/* <div className="controls">
-                        <fieldset className="input-group"> */}
-                    {/* <button className="stop">Stop</button> */ }
-                    {/* </fieldset>
-                    </div> */}
-                    <div id="result_strip">
-                        <ul className="thumbnails"></ul>
-                        <ul className="collector"></ul>
-                    </div>
                     <div id="interactive" className="viewport"></div>
                 </section>
                 <strong>Barcode:</strong> <input id='query' defaultValue='00014885'></input>
@@ -104,9 +95,9 @@ class Home extends Component {
                 <button onClick={ this.soup }>Soup</button>
                 <br />
                 <button onClick={ this.cornbread }>Cornbread</button>
-                <script src="../js/adapter-latest.js" type="text/javascript"></script>
+                {/* <script src="../js/adapter-latest.js" type="text/javascript"></script>
                 <script src="../js/quagga.js" type="text/javascript"></script>
-                <script src="../js/live_w_locator.js" type="text/javascript"></script>
+                <script src="../js/live_w_locator.js" type="text/javascript"></script> */}
             </div>
         );
     }
