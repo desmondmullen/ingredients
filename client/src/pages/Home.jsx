@@ -50,6 +50,20 @@ class Home extends Component {
             .catch(err => console.log(err));
     };
 
+    reload_js = () => {
+        console.log('reloading');
+        document.getElementById('scanner-script').remove();
+
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        // script.src = "live_w_locator.js";
+        script.src = "https://desmondmullen.com/static/live_w_locator.js";
+        script.id = "scanner-script"
+        document.head.appendChild(script);
+        const theContainer = document.getElementById("container");
+        theContainer.style.display = 'block';
+    }
+
     granola = () => {
         document.getElementById('query').value = '021908498263';
         this.queryUSDA();
@@ -76,7 +90,7 @@ class Home extends Component {
                 <section id="container" className="container">
                     <div id="interactive" className="viewport"></div>
                 </section>
-                <button id='scan'>Scan</button> <button id='cancel'>Cancel</button>
+                <button id='scan' onClick={ this.reload_js }>Scan</button> <button id='cancel'>Cancel</button>
                 <br />
                 <br />
                 <strong>Barcode:</strong> <input id='query' onClick={ this.barcodeChange } defaultValue='00014885'></input> <button onClick={ this.queryUSDA }>Search</button>
