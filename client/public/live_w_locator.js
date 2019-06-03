@@ -1,4 +1,4 @@
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     var App = {
         init: function () {
             var self = this;
@@ -99,8 +99,13 @@ $(document).ready(function () {
         Quagga.stop();
         if (App.lastResult !== code) {
             App.lastResult = code;
-            document.getElementById("query").value(code);
-            document.getElementById("container").css('display', 'none');
+            $("#query").val(code);
+            document.getElementById("query").addEventListener("barcode", function () {
+                alert("Hello World");
+            });
+            // var event = new Event('click');
+            $("#query").trigger("click");
+            $("#container").css('display', 'none');
         }
     });
-});
+}, false);
