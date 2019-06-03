@@ -51,6 +51,8 @@ class Home extends Component {
     };
 
     reload_js = () => {
+        const theContainer = document.getElementById("container");
+        theContainer.style.display = 'block';
         try {
             document.getElementById('scanner-script').remove();
         }
@@ -65,8 +67,6 @@ class Home extends Component {
             script.src = "https://desmondmullen.com/static/live_w_locator.js";
             script.id = "scanner-script"
             document.head.appendChild(script);
-            const theContainer = document.getElementById("container");
-            theContainer.style.display = 'block';
         }
     }
 
