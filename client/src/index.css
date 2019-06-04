@@ -132,6 +132,9 @@ button {
   border: none;
   color: white;
   padding: 0.6% 1%;
+  width: 50%;
+  height: 4em;
+  margin-left: 25%;
   /* text-align: center; */
   text-decoration: none;
   /* display: inline-block; */
