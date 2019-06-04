@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import API from "../utils/API";
 
+let timeout = Date.now() + 3000;
+
 class Home extends Component {
     constructor (props) {
         super(props);
@@ -25,39 +27,46 @@ class Home extends Component {
     }
 
     queryUSDA = () => {
-        document.getElementById('result').innerText = 'searching...';
-        const theQuery = document.getElementById('query').value;
-        const theAlerts = ((document.getElementById('alert').value).toUpperCase()).split(' ');
-        API.queryUSDA(theQuery)
-            .then((result) => {
-                if (result.data.length) {
-                    console.log('no result');
-                    document.getElementById('result').innerText = 'no result';
-                } else {
-                    console.log(result.data.foods[ 0 ].food.nutrients);
-                    const theNutrients = result.data.foods[ 0 ].food.nutrients;
-                    let theNutrientList = '<strong>Per ' + theNutrients[ 0 ].measures[ 0 ].qty + ' ' + theNutrients[ 0 ].measures[ 0 ].label + '</strong><br />';
-                    for (let i = 0; i < theNutrients.length; i++) {
-                        theNutrientList += theNutrients[ i ].name + ' ' + theNutrients[ i ].value + theNutrients[ i ].unit + '<br />';
-                    }
-                    const theName = result.data.foods[ 0 ].food.desc.name + ' ' + result.data.foods[ 0 ].food.desc.manu;
-                    const theIngredients = result.data.foods[ 0 ].food.ing.desc;
-                    document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients + '<br /><br />' + theNutrientList;
-                    let theAlertHits = [];
-                    for (let i = 0; i < theIngredients.length; i++) {
-                        if (theIngredients.indexOf(theAlerts[ i ]) > 0) {
-                            theAlertHits.push(theAlerts[ i ]);
+        if (Date.now() < timeout) {
+            // console.log('too soon');
+        } else {
+            // console.log('okay');
+            timeout = Date.now() + 1000;
+
+            document.getElementById('result').innerText = 'searching...';
+            const theQuery = document.getElementById('query').value;
+            const theAlerts = ((document.getElementById('alert').value).toUpperCase()).split(' ');
+            API.queryUSDA(theQuery)
+                .then((result) => {
+                    if (result.data.length) {
+                        console.log('no result');
+                        document.getElementById('result').innerText = 'no result';
+                    } else {
+                        console.log(result.data.foods[ 0 ].food.nutrients);
+                        const theNutrients = result.data.foods[ 0 ].food.nutrients;
+                        let theNutrientList = '<strong>Per ' + theNutrients[ 0 ].measures[ 0 ].qty + ' ' + theNutrients[ 0 ].measures[ 0 ].label + '</strong><br />';
+                        for (let i = 0; i < theNutrients.length; i++) {
+                            theNutrientList += theNutrients[ i ].name + ' ' + theNutrients[ i ].value + theNutrients[ i ].unit + '<br />';
                         }
+                        const theName = result.data.foods[ 0 ].food.desc.name + ' ' + result.data.foods[ 0 ].food.desc.manu;
+                        const theIngredients = result.data.foods[ 0 ].food.ing.desc;
+                        document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients + '<br /><br />' + theNutrientList;
+                        let theAlertHits = [];
+                        for (let i = 0; i < theIngredients.length; i++) {
+                            if (theIngredients.indexOf(theAlerts[ i ]) > 0) {
+                                theAlertHits.push(theAlerts[ i ]);
+                            }
+                        }
+                        if (theAlertHits.length > 0) {
+                            setTimeout(function () {
+                                alert('This product contains ' + theAlertHits.join(', ').toLowerCase());
+                            }, 100);
+                        };
                     }
-                    if (theAlertHits.length > 0) {
-                        setTimeout(function () {
-                            alert('This product contains ' + theAlertHits.join(', ').toLowerCase());
-                        }, 100);
-                    };
-                }
-                return false;
-            })
-            .catch(err => console.log(err));
+                    return false;
+                })
+                .catch(err => console.log(err));
+        }
     };
 
     showScanner = () => {
@@ -139,7 +148,8 @@ class Home extends Component {
                 </section>
                 <button id='scan' onClick={ this.reload_js }>Scan</button> <button id='cancel' onClick={ this.hideScanner }>Cancel</button>
                 <br />
-                <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } defaultValue='00014885' size="14"></input> <button onClick={ this.barcodeChange }>Search</button>
+                <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } size="14"></input> <button onClick={ this.barcodeChange }>Search</button>
+                {/* <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } defaultValue='00014885' size="14"></input> <button onClick={ this.barcodeChange }>Search</button> */ }
                 <br />
                 <strong>Watch for:</strong> <input id='alert' onChange={ this.debounceEvent }></input>
                 <br />
