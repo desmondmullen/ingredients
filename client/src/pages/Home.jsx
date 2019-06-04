@@ -10,7 +10,17 @@ class Home extends Component {
         };
     };
 
+    componentDidMount () {
+        document.getElementById("alert").value = localStorage.getItem("alert");
+        document.getElementById("query").value = localStorage.getItem("query");
+        const theScanButton = document.getElementById('scan');
+        theScanButton.style.display = 'none';
+    }
+
     barcodeChange = () => {
+        this.hideScanner();
+        localStorage.setItem("query", document.getElementById("query").value);
+        console.log(document.getElementById("query").value);
         this.queryUSDA();
     }
 
@@ -50,9 +60,26 @@ class Home extends Component {
             .catch(err => console.log(err));
     };
 
-    reload_js = () => {
+    showScanner = () => {
         const theContainer = document.getElementById("container");
         theContainer.style.display = 'block';
+        const theScanButton = document.getElementById('scan');
+        theScanButton.style.display = 'none';
+        const theCancelButton = document.getElementById('cancel');
+        theCancelButton.style.display = 'block';
+    }
+
+    hideScanner = () => {
+        const theContainer = document.getElementById("container");
+        theContainer.style.display = 'none';
+        const theScanButton = document.getElementById('scan');
+        theScanButton.style.display = 'block';
+        const theCancelButton = document.getElementById('cancel');
+        theCancelButton.style.display = 'none';
+    }
+
+    reload_js = () => {
+        this.showScanner();
         try {
             document.getElementById('scanner-script').remove();
         }
@@ -69,6 +96,20 @@ class Home extends Component {
             document.head.appendChild(script);
         }
     }
+
+    storePrefs = () => {
+        localStorage.setItem("alert", document.getElementById("alert").value);
+    }
+
+    debounceEvent = () => {
+        let interval;
+        clearTimeout(interval);
+        interval = setTimeout(() => {
+            interval = null;
+            this.storePrefs();
+        }, 250);
+    };
+
 
     granola = () => {
         document.getElementById('query').value = '021908498263';
@@ -96,12 +137,12 @@ class Home extends Component {
                 <section id="container" className="container">
                     <div id="interactive" className="viewport"></div>
                 </section>
-                <button id='scan' onClick={ this.reload_js }>Scan</button> <button id='cancel'>Cancel</button>
+                <button id='scan' onClick={ this.reload_js }>Scan</button> <button id='cancel' onClick={ this.hideScanner }>Cancel</button>
                 <br />
                 <br />
-                <strong>Barcode:</strong> <input id='query' onClick={ this.barcodeChange } defaultValue='00014885'></input> <button onClick={ this.queryUSDA }>Search</button>
+                <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } defaultValue='00014885'></input> <button onClick={ this.barcodeChange }>Search</button>
                 <br />
-                <strong>Watch for:</strong> <input id='alert' defaultValue='onion'></input>
+                <strong>Watch for:</strong> <input id='alert' onChange={ this.debounceEvent }></input>
                 <br />
                 <br />
                 <div id='result' width='100%'></div>
