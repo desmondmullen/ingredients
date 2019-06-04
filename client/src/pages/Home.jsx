@@ -143,23 +143,32 @@ class Home extends Component {
     render () {
         return (
             <div>
+                <div className="topbar">
+                    FoodVetter
+                </div>
                 <section id="container" className="container">
                     <div id="interactive" className="viewport"></div>
                 </section>
                 <button id='scan' onClick={ this.reload_js }>Scan</button> <button id='cancel' onClick={ this.hideScanner }>Cancel</button>
                 <br />
-                <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } size="14"></input> <button onClick={ this.barcodeChange }>Search</button>
-                {/* <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } defaultValue='00014885' size="14"></input> <button onClick={ this.barcodeChange }>Search</button> */ }
-                <br />
-                <strong>Watch for:</strong> <input id='alert' onChange={ this.debounceEvent }></input>
-                <br />
-                <br />
-                <div id='result' width='100%'></div>
-                <br />
-                <br />
-                <strong>Examples:</strong>
-                <br />
-                <button onClick={ this.granola }>Granola</button> <button onClick={ this.bread }>Bread</button> <button onClick={ this.soup }>Soup</button> <button onClick={ this.cornbread }>Cornbread</button>
+                <section id='body-text'>
+                    <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } size="14"></input> <button onClick={ this.barcodeChange }>Search</button>
+                    {/* <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } defaultValue='00014885' size="14"></input> <button onClick={ this.barcodeChange }>Search</button> */ }
+                    <br />
+                    <strong>Watch for:</strong> <input id='alert' onChange={ this.debounceEvent }></input>
+                    <br />
+                    <br />
+                    <div id='result' width='100%'></div>
+                    <br />
+                    <br />
+                    <strong>Examples:</strong>
+                    <br />
+                    <button onClick={ this.granola }>Granola</button> <button onClick={ this.bread }>Bread</button> <button onClick={ this.soup }>Soup</button> <button onClick={ this.cornbread }>Cornbread</button>
+                </section>
+                <div className="bottombar">
+                    &copy;2019 <a id="desmondmullencomlink" href="https://desmondmullen.com" target="_blank" rel="noopener noreferrer">desmondmullen.com</a>
+                </div>
+
             </div>
         );
     }
