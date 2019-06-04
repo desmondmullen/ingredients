@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import API from "../utils/API";
 
-let timeout = Date.now() + 3000;
+let timeout = Date.now() + 1000;
 
 class Home extends Component {
     constructor (props) {
