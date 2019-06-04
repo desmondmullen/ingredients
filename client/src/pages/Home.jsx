@@ -139,8 +139,7 @@ class Home extends Component {
                 </section>
                 <button id='scan' onClick={ this.reload_js }>Scan</button> <button id='cancel' onClick={ this.hideScanner }>Cancel</button>
                 <br />
-                <br />
-                <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } defaultValue='00014885'></input> <button onClick={ this.barcodeChange }>Search</button>
+                <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } defaultValue='00014885' size="14"></input> <button onClick={ this.barcodeChange }>Search</button>
                 <br />
                 <strong>Watch for:</strong> <input id='alert' onChange={ this.debounceEvent }></input>
                 <br />
