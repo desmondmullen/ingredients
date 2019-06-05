@@ -129,7 +129,7 @@ class Home extends Component {
 
     storePrefs = () => {
         const key = 'watchFor';
-        const value = document.getElementById("alert").value;
+        const value = document.getElementById("alert").value.trim();
         localStorage.setItem("alert", value);
         this.setState({ [ key ]: value });
     }
