@@ -7,13 +7,13 @@ class Home extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            latitude: 0,
-            longitude: 0,
+            watchFor: ''
         };
     };
 
     componentDidMount () {
         document.getElementById("alert").value = localStorage.getItem("alert");
+        this.setState({ watchFor: localStorage.getItem("alert") })
         document.getElementById("query").value = localStorage.getItem("query");
         const theScanButton = document.getElementById('scan');
         theScanButton.style.display = 'none';
@@ -49,25 +49,42 @@ class Home extends Component {
                             theNutrientList += theNutrients[ i ].name + ' ' + theNutrients[ i ].value + theNutrients[ i ].unit + '<br />';
                         }
                         const theName = result.data.foods[ 0 ].food.desc.name + ' ' + result.data.foods[ 0 ].food.desc.manu;
-                        const theIngredients = result.data.foods[ 0 ].food.ing.desc;
-                        document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients + '<br /><br />' + theNutrientList;
+                        const theIngredients = this.highlightWords(result.data.foods[ 0 ].food.ing.desc);
+                        // const theIngredients = result.data.foods[ 0 ].food.ing.desc;
+                        // this.highlightWords(theIngredients);
+                        document.getElementById('result').innerHTML = theIngredients;
+                        // document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients + '<br /><br />' + theNutrientList;
                         let theAlertHits = [];
                         for (let i = 0; i < theIngredients.length; i++) {
                             if (theIngredients.indexOf(theAlerts[ i ]) > 0) {
                                 theAlertHits.push(theAlerts[ i ]);
                             }
                         }
-                        if (theAlertHits.length > 0) {
-                            setTimeout(function () {
-                                alert('This product contains ' + theAlertHits.join(', ').toLowerCase());
-                            }, 100);
-                        };
+                        // if (theAlertHits.length > 0) {
+                        //     setTimeout(function () {
+                        //         alert('This product contains ' + theAlertHits.join(', ').toLowerCase());
+                        //     }, 100);
+                        // };
                     }
                     return false;
                 })
                 .catch(err => console.log(err));
         }
     };
+
+    highlightWords = (theText) => {
+        // let theText = document.getElementById('result').innerHTML;
+        let theWordsToHighlight = this.state.watchFor.split(' ');
+        for (let i = 0; i < theWordsToHighlight.length; i++) {
+            let highlightWord = theWordsToHighlight[ i ];
+            // console.log(highlightWord);
+            var theExpression = new RegExp(highlightWord, "gi");
+            theText = theText.replace(theExpression, `<span class="highlight">${highlightWord.toUpperCase()}</span>`);
+            // console.log(theText);
+        }
+        return theText;
+        // "the fox jumped over the other fox".replace(/fox/g, "<span>fox</span>");
+    }
 
     showScanner = () => {
         const theContainer = document.getElementById("container");
@@ -106,10 +123,6 @@ class Home extends Component {
         }
     }
 
-    storePrefs = () => {
-        localStorage.setItem("alert", document.getElementById("alert").value);
-    }
-
     debounceEvent = () => {
         let interval;
         clearTimeout(interval);
@@ -119,6 +132,12 @@ class Home extends Component {
         }, 250);
     };
 
+    storePrefs = () => {
+        const key = 'watchFor';
+        const value = document.getElementById("alert").value;
+        localStorage.setItem("alert", value);
+        this.setState({ [ key ]: value });
+    }
 
     granola = () => {
         document.getElementById('query').value = '021908498263';
