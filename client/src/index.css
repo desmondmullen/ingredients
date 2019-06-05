@@ -204,7 +204,8 @@ input {
 }
 
 .highlight {
-  color: red;
-  font-weight: bold;
+  /* color: red; */
+  background-color: #fff10a;
+  font-weight: 800;
   font-size: large;
 }
