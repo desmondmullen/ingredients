@@ -13,7 +13,7 @@ class Home extends Component {
 
     componentDidMount () {
         document.getElementById("alert").value = localStorage.getItem("alert");
-        this.setState({ watchFor: localStorage.getItem("alert") })
+        this.setState({ watchFor: localStorage.getItem("alert") || 'fizzbuzz' })
         document.getElementById("query").value = localStorage.getItem("query");
         const theScanButton = document.getElementById('scan');
         theScanButton.style.display = 'none';
