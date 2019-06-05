@@ -42,18 +42,16 @@ class Home extends Component {
                         console.log('no result');
                         document.getElementById('result').innerText = 'no result';
                     } else {
-                        console.log(result.data.foods[ 0 ].food.nutrients);
-                        const theNutrients = result.data.foods[ 0 ].food.nutrients;
-                        let theNutrientList = '<strong>Per ' + theNutrients[ 0 ].measures[ 0 ].qty + ' ' + theNutrients[ 0 ].measures[ 0 ].label + '</strong><br />';
-                        for (let i = 0; i < theNutrients.length; i++) {
-                            theNutrientList += theNutrients[ i ].name + ' ' + theNutrients[ i ].value + theNutrients[ i ].unit + '<br />';
-                        }
+                        // console.log(result.data.foods[ 0 ].food.nutrients);
+                        // const theNutrients = result.data.foods[ 0 ].food.nutrients;
+                        // let theNutrientList = '<strong>Per ' + theNutrients[ 0 ].measures[ 0 ].qty + ' ' + theNutrients[ 0 ].measures[ 0 ].label + '</strong><br />';
+                        // for (let i = 0; i < theNutrients.length; i++) {
+                        //     theNutrientList += theNutrients[ i ].name + ' ' + theNutrients[ i ].value + theNutrients[ i ].unit + '<br />';
+                        // }
                         const theName = result.data.foods[ 0 ].food.desc.name + ' ' + result.data.foods[ 0 ].food.desc.manu;
                         const theIngredients = this.highlightWords(result.data.foods[ 0 ].food.ing.desc);
-                        // const theIngredients = result.data.foods[ 0 ].food.ing.desc;
-                        // this.highlightWords(theIngredients);
-                        // document.getElementById('result').innerHTML = theIngredients;
-                        document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients + '<br /><br />' + theNutrientList;
+                        document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients;
+                        // document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients + '<br /><br />' + theNutrientList;
                         let theAlertHits = [];
                         for (let i = 0; i < theIngredients.length; i++) {
                             if (theIngredients.indexOf(theAlerts[ i ]) > 0) {
@@ -77,13 +75,10 @@ class Home extends Component {
         let theWordsToHighlight = this.state.watchFor.split(' ');
         for (let i = 0; i < theWordsToHighlight.length; i++) {
             let highlightWord = theWordsToHighlight[ i ];
-            // console.log(highlightWord);
             var theExpression = new RegExp(highlightWord, "gi");
             theText = theText.replace(theExpression, `<span class="highlight">${highlightWord.toUpperCase()}</span>`);
-            // console.log(theText);
         }
         return theText;
-        // "the fox jumped over the other fox".replace(/fox/g, "<span>fox</span>");
     }
 
     showScanner = () => {
@@ -172,7 +167,6 @@ class Home extends Component {
                 <br />
                 <section id='body-text'>
                     <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } size="14"></input> <button onClick={ this.barcodeChange }>Search</button>
-                    {/* <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } defaultValue='00014885' size="14"></input> <button onClick={ this.barcodeChange }>Search</button> */ }
                     <br />
                     <strong>Watch for:</strong> <input id='alert' onChange={ this.debounceEvent }></input>
                     <br />
