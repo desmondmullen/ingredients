@@ -52,8 +52,8 @@ class Home extends Component {
                         const theIngredients = this.highlightWords(result.data.foods[ 0 ].food.ing.desc);
                         // const theIngredients = result.data.foods[ 0 ].food.ing.desc;
                         // this.highlightWords(theIngredients);
-                        document.getElementById('result').innerHTML = theIngredients;
-                        // document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients + '<br /><br />' + theNutrientList;
+                        // document.getElementById('result').innerHTML = theIngredients;
+                        document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients + '<br /><br />' + theNutrientList;
                         let theAlertHits = [];
                         for (let i = 0; i < theIngredients.length; i++) {
                             if (theIngredients.indexOf(theAlerts[ i ]) > 0) {
@@ -178,7 +178,6 @@ class Home extends Component {
                     <br />
                     <br />
                     <div id='result' width='100%'></div>
-                    <br />
                     <br />
                     <strong>Examples:</strong>
                     <br />
