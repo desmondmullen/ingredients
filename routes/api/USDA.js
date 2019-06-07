@@ -5,4 +5,7 @@ const USDAController = require("../../controllers/USDAController");
 router.route("/:id")
     .get(USDAController.retrieveUSDAData);
 
+router.route("/search/:id")
+    .get(USDAController.retrieveUSDAMatches);
+
 module.exports = router;

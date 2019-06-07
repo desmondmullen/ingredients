@@ -21,5 +21,16 @@ module.exports = {
                 console.log('controller 8: ' + error);
                 res.json('no result');
             });
+    },
+    retrieveUSDAMatches: function (req, res) {
+        const theText = req.params.id;
+        const theTextQuery = `https://api.nal.usda.gov/ndb/search/?format=json&q=${theText}&ds=Branded%20Food%20Products&sort=n&max=60&offset=0&api_key=${USDA}`
+        axios.get(theTextQuery)
+            .then(function (response) {
+                res.json(response.data);
+            })
+            .catch(function (error) {
+                console.log('controller 6: ' + error);
+            });
     }
 };

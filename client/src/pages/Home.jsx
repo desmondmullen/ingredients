@@ -35,40 +35,44 @@ class Home extends Component {
 
             document.getElementById('result').innerText = 'searching...';
             const theQuery = document.getElementById('query').value;
-            const theAlerts = ((document.getElementById('alert').value).toUpperCase()).split(' ');
+            // const theAlerts = ((document.getElementById('alert').value).toUpperCase()).split(' ');
             API.queryUSDA(theQuery)
                 .then((result) => {
                     if (result.data.length) {
                         console.log('no result');
                         document.getElementById('result').innerText = 'no result';
                     } else {
-                        // console.log(result.data.foods[ 0 ].food.nutrients);
-                        // const theNutrients = result.data.foods[ 0 ].food.nutrients;
-                        // let theNutrientList = '<strong>Per ' + theNutrients[ 0 ].measures[ 0 ].qty + ' ' + theNutrients[ 0 ].measures[ 0 ].label + '</strong><br />';
-                        // for (let i = 0; i < theNutrients.length; i++) {
-                        //     theNutrientList += theNutrients[ i ].name + ' ' + theNutrients[ i ].value + theNutrients[ i ].unit + '<br />';
-                        // }
-                        const theName = result.data.foods[ 0 ].food.desc.name + ' ' + result.data.foods[ 0 ].food.desc.manu;
-                        const theIngredients = this.highlightWords(result.data.foods[ 0 ].food.ing.desc);
-                        document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients;
-                        // document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients + '<br /><br />' + theNutrientList;
-                        let theAlertHits = [];
-                        for (let i = 0; i < theIngredients.length; i++) {
-                            if (theIngredients.indexOf(theAlerts[ i ]) > 0) {
-                                theAlertHits.push(theAlerts[ i ]);
+                        if (/^\d+$/.test(theQuery)) { // true if its numbers
+                            const theName = result.data.foods[ 0 ].food.desc.name + ' ' + result.data.foods[ 0 ].food.desc.manu;
+                            const theIngredients = this.highlightWords(result.data.foods[ 0 ].food.ing.desc);
+                            document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients;
+                        } else { // it was a word search
+                            const theMatches = result.data.list.item;
+                            if (theMatches.length <= 50) {
+                                document.getElementById('result').innerHTML = '<strong>Matches: ' + theMatches.length + '</strong></br>';
+                            } else {
+                                document.getElementById('result').innerHTML = '<strong><em>More than 50 matches were returned, only showing the first 50</em></<strong></br>';
                             }
+                            for (let i = 0; i < theMatches.length; i++) {
+                                document.getElementById('result').innerHTML += `<button name=${theMatches[ i ].ndbno} class='list-item'>${theMatches[ i ].name}</button><br />`;
+                            }
+                            document.addEventListener('click', (event) => {
+                                if (event.target.name !== '' && event.target.name !== undefined) {
+                                    this.enterNdbnoAndQuery(event.target.name);
+                                }
+                            }, false);
                         }
-                        // if (theAlertHits.length > 0) {
-                        //     setTimeout(function () {
-                        //         alert('This product contains ' + theAlertHits.join(', ').toLowerCase());
-                        //     }, 100);
-                        // };
+                        return false;
                     }
-                    return false;
                 })
                 .catch(err => console.log(err));
         }
     };
+
+    enterNdbnoAndQuery = (ndbno) => {
+        document.getElementById('query').value = ndbno;
+        this.queryUSDA();
+    }
 
     highlightWords = (theText) => {
         // let theText = document.getElementById('result').innerHTML;
@@ -130,6 +134,7 @@ class Home extends Component {
     storePrefs = () => {
         const key = 'watchFor';
         const value = document.getElementById("alert").value.trim();
+        this.queryUSDA();
         localStorage.setItem("alert", value);
         this.setState({ [ key ]: value });
     }
