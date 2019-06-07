@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import API from "../utils/API";
+import BtnExample from '../components/BtnExample';
+
 
 let timeout = Date.now() + 1000;
 
@@ -7,7 +9,8 @@ class Home extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            watchFor: ''
+            watchFor: '',
+            theResult: ''
         };
     };
 
@@ -118,14 +121,33 @@ class Home extends Component {
         }
     }
 
-    debounceEvent = () => {
-        let interval;
-        clearTimeout(interval);
-        interval = setTimeout(() => {
-            interval = null;
-            this.storePrefs();
-        }, 250);
+    debounceEvent = (e) => {
+        console.log(e.target.id);
+        if (e.target.id === 'query') {
+            let interval;
+            clearTimeout(interval);
+            interval = setTimeout(() => {
+                interval = null;
+                this.queryUSDA();
+            }, 500);
+        } else {
+            let interval;
+            clearTimeout(interval);
+            interval = setTimeout(() => {
+                interval = null;
+                this.storePrefs();
+            }, 500);
+        }
     };
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        // if (event.target.id === 'query') {
+        this.barcodeChange();
+        // } else {
+
+        // }
+    }
 
     storePrefs = () => {
         const key = 'watchFor';
@@ -167,9 +189,11 @@ class Home extends Component {
                 <button id='scan' onClick={ this.reload_js }>Scan</button> <button id='cancel' onClick={ this.hideScanner }>Cancel</button>
                 <br />
                 <section id='body-text'>
-                    <strong>Barcode:</strong> <input id='query' onChange={ this.barcodeChange } onClick={ this.barcodeChange } size="14"></input> <button onClick={ this.barcodeChange }>Search</button>
-                    <br />
-                    <strong>Watch for:</strong> <input id='alert' onChange={ this.debounceEvent }></input>
+                    <form onSubmit={ this.handleSubmit }>
+                        <strong>Barcode:</strong> <input id='query' onChange={ this.debounceEvent } onClick={ this.barcodeChange } size="14"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button>
+                        <br />
+                        <strong>Watch for:</strong> <input id='alert' onChange={ this.debounceEvent }></input>
+                    </form>
                     <br />
                     <br />
                     <div id='result' width='100%'></div>

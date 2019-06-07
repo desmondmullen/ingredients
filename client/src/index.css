@@ -210,7 +210,7 @@ input {
   font-size: large;
 }
 
-.list-item {
+.list-item, .btn-example {
   /* background-color: white; */
   cursor: pointer;
   margin: 2px 0;
