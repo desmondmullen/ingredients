@@ -54,13 +54,8 @@ class Home extends Component {
                                 document.getElementById('result').innerHTML = '<strong><em>More than 50 matches were returned, only showing the first 50</em></<strong></br>';
                             }
                             for (let i = 0; i < theMatches.length; i++) {
-                                document.getElementById('result').innerHTML += `<button name=${theMatches[ i ].ndbno} class='list-item'>${theMatches[ i ].name}</button><br />`;
+                                document.getElementById('result').innerHTML += `<button name=${theMatches[ i ].ndbno} onclick="document.getElementById('query').value=this.name;document.getElementById('query').click()" class='list-item'>${theMatches[ i ].name}</button><br />`;
                             }
-                            document.addEventListener('click', (event) => {
-                                if (event.target.name !== '' && event.target.name !== undefined) {
-                                    this.enterNdbnoAndQuery(event.target.name);
-                                }
-                            }, false);
                         }
                         return false;
                     }
@@ -95,6 +90,7 @@ class Home extends Component {
     }
 
     hideScanner = () => {
+        document.getElementById("cancel").click();
         const theContainer = document.getElementById("container");
         theContainer.style.display = 'none';
         const theScanButton = document.getElementById('scan');
