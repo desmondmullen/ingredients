@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import API from "../utils/API";
+import Modal from "../components/Modal/Modal";
 import parse from 'html-react-parser';
 
 let timeout = Date.now() + 1000;
@@ -11,10 +12,17 @@ class Home extends Component {
             theQuery: '',
             theWatchlist: '',
             theName: '',
-            theNameClass: 'bold',
+            theNameClass: 'bold display-name',
             theIngredients: '',
-            theIngredientsHighlighted: ''
+            theIngredientsHighlighted: '',
+            show: false,
         };
+    }
+
+    showModal = e => {
+        this.setState({
+            show: !this.state.show
+        });
     };
 
     componentDidMount () {
@@ -118,9 +126,9 @@ class Home extends Component {
         }
         let theNameClass = '';
         if (theText.indexOf('<span') !== -1) {
-            theNameClass = 'highlight';
+            theNameClass = 'highlight display-name';
         } else {
-            theNameClass = 'bold';
+            theNameClass = 'bold display-name';
         }
         this.setState({ theIngredientsHighlighted: theText, theNameClass: theNameClass });
         // setTimeout(() => {
@@ -231,8 +239,11 @@ class Home extends Component {
         return (
             <div>
                 <div className="topbar">
-                    FoodVetter
+                    FoodVetter<button id='btn-quickstart' onClick={ e => { this.showModal() } }>Quick Start</button>
                 </div>
+                <Modal show={ this.state.show } title='Quick Start'>
+                    Scan a food barcode for a list of ingredients. Any word(s) you have entered in the <em>Watchlist</em> will instantly be highlighted in the list of ingredients.<br /><br />Add individual words like "salt" or "wheat" or "fructose" to your Watchlist - anything you want <em>FoodVetter</em> to highlight for you.<br />When adding words, separate them with a space but no comma.<br /><br />You can manually enter a barcode number to seartch. Better yet, enter part of a product name to search by name!<br /><br /><button className='modal-btn' onClick={ e => { this.showModal() } }>Close</button>
+                </Modal>
                 <section id="container" className="container">
                     <div id="interactive" className="viewport"></div>
                 </section>
@@ -241,15 +252,16 @@ class Home extends Component {
                 <section id='body-text'>
                     <form onSubmit={ this.handleSubmit }>
                         <div class='search'><strong>Barcode or Name search:</strong><br /><input id='query' onChange={ this.debounceEvent } size="14"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button></div>
-                        {/* <strong>Barcode:</strong> <input id='query' onChange={ this.debounceEvent } onClick={ this.barcodeChange } size="14"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button> */ }
                         <br />
                         <div class='watchlist'><strong>Watchlist (separate with space):</strong><br /><input id='watchlist' onChange={ this.debounceEvent }></input></div>
                     </form>
+                    <br />
                     <hr />
                     <div className={ this.state.theNameClass }>{ parse(this.state.theName) }</div>
                     <div>{ parse(this.state.theIngredientsHighlighted) }</div>
                     <div id='result' width='100%'></div>
                     <hr />
+                    <br />
                     <strong>Examples:</strong>
                     <br />
                     <button onClick={ this.granola }>Granola</button> <button onClick={ this.bread }>Bread</button> <button onClick={ this.soup }>Soup</button> <button onClick={ this.cornbread }>Cornbread</button>

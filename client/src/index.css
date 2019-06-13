@@ -189,8 +189,11 @@ input {
 }
 
 .topbar>a, .topbar>button {
-  width: 50%;
-  float: right;
+  position: fixed;
+  right: 1%;
+  background-color: #121212;
+  /* width: 50%; */
+  /* float: right; */
 }
 
 .bottombar>a, .bottombar>button {
@@ -206,6 +209,10 @@ input {
 
 .bold {
   font-weight: bold;
+}
+
+.display-name {
+  margin-bottom: 0.5%;
 }
 
 .highlight {
@@ -232,3 +239,23 @@ input {
   background-color: skyblue;
   padding: 5px;
 }
+
+.modal {
+  padding: 1%;
+  background-color: aquamarine;
+  margin: 5% 2%;
+  text-align: center;
+}
+
+.modal-title {
+  font-weight: bold;
+  font-size: xx-large;
+  margin-bottom: 1%
+}
+
+.modal-body {
+  margin: 2% 5%;
+  text-align: left;
+}
+
+.modal-btn {}
