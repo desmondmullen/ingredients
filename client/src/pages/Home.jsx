@@ -229,9 +229,9 @@ class Home extends Component {
                 <br />
                 <section id='body-text'>
                     <form onSubmit={ this.handleSubmit }>
-                        <div class='search'><strong>Barcode or Name search:</strong><br /><input id='query' onChange={ this.debounceEvent } size="14"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button></div>
+                        <div class='search'><strong>Barcode or Name search:</strong><br /><input id='query' type="text" onChange={ this.debounceEvent } size="20"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button></div>
                         <br />
-                        <div class='watchlist'><strong>Watchlist (separate with space):</strong><br /><input id='watchlist' onChange={ this.debounceEvent }></input></div>
+                        <div class='watchlist'><strong>Watchlist (separate with space):</strong><br /><textarea id='watchlist' type="text" onChange={ this.debounceEvent }></textarea></div>
                     </form>
                     <br />
                     <hr />

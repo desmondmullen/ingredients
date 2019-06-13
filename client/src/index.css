@@ -259,3 +259,9 @@ input {
 }
 
 .modal-btn {}
+
+#watchlist {
+  width: 99.5%;
+  /* height: 1rem; */
+  font-size: medium;
+}
