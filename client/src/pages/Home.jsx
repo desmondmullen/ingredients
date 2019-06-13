@@ -28,7 +28,6 @@ class Home extends Component {
     componentDidMount () {
         const theWatchlist = localStorage.getItem("theWatchlist");
         const theQuery = localStorage.getItem("theQuery");
-        // console.log('theQuery: ' + localStorage.getItem("theQuery"));
         document.getElementById("watchlist").value = theWatchlist;
         document.getElementById("query").value = theQuery;
         this.setState({ theWatchlist: theWatchlist || 'fizzbuzz', theQuery: theQuery })
@@ -40,8 +39,7 @@ class Home extends Component {
         if (document.activeElement.id !== 'watchlist') {
             this.hideScanner();
             this.storePrefs();
-            // localStorage.setItem("theQuery", document.getElementById("query").value);
-            // console.log(document.getElementById("query").value);
+            this.setState({ theNameClass: 'bold display-name' });
             this.queryUSDA();
         }
     }
@@ -52,8 +50,6 @@ class Home extends Component {
             // console.log('too soon');
         } else {
             timeout = Date.now() + 1000;
-
-            // document.getElementById('result').innerText = 'searching...';
             this.setState({ theName: '', theIngredients: '', theIngredientsHighlighted: 'searching...' })
             const theQuery = document.getElementById('query').value;
             API.queryUSDA(theQuery)
@@ -81,14 +77,6 @@ class Home extends Component {
                             }
                             this.setState({ theIngredientsHighlighted: theMatchesList });
                             this.attachListeners();
-                            // if (theMatches.length <= 50) {
-                            //     document.getElementById('result').innerHTML = '<strong>Matches: ' + theMatches.length + '</strong></br>';
-                            // } else {
-                            //     document.getElementById('result').innerHTML = '<strong><em>More than 50 matches were returned, only showing the first 50</em></<strong></br>';
-                            // }
-                            // for (let i = 0; i < theMatches.length; i++) {
-                            //     document.getElementById('result').innerHTML += `<button name=${theMatches[ i ].ndbno} onclick="document.getElementById('query').value=this.name;document.getElementById('query').click()" class='list-item'>${theMatches[ i ].name}</button><br />`;
-                            // }
                         }
                         return false;
                     }
@@ -108,11 +96,6 @@ class Home extends Component {
         }
     }
 
-    // enterNdbnoAndQuery = (ndbno) => {
-    //     document.getElementById('query').value = ndbno;
-    //     this.queryUSDA();
-    // }
-
     highlightWords = () => {
         let theText = this.state.theIngredients;
         const theWatchlist = document.getElementById("watchlist").value.trim();
@@ -131,9 +114,6 @@ class Home extends Component {
             theNameClass = 'bold display-name';
         }
         this.setState({ theIngredientsHighlighted: theText, theNameClass: theNameClass });
-        // setTimeout(() => {
-        //     console.log(this.state.theNameClass);
-        // }, 250);
     }
 
     showScanner = () => {
@@ -175,7 +155,6 @@ class Home extends Component {
     }
 
     debounceEvent = (e) => {
-        // console.log('debounce: ' + e.target.id);
         if (e.target.id === 'query') {
             // let interval;
             // clearTimeout(interval);
@@ -209,7 +188,6 @@ class Home extends Component {
     storePrefs = () => {
         const theQuery = document.getElementById("query").value.trim();
         const theWatchlist = document.getElementById("watchlist").value.trim();
-        // this.highlightWords();
         localStorage.setItem("theQuery", theQuery);
         localStorage.setItem("theWatchlist", theWatchlist);
         this.setState({ theQuery: theQuery, theWatchlist: theWatchlist });
