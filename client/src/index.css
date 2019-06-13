@@ -270,4 +270,7 @@ input {
   .topbar {
     text-align: left;
   }
+  #watchlist {
+    width: 99%;
+  }
 }
