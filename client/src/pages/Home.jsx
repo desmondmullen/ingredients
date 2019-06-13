@@ -159,12 +159,12 @@ class Home extends Component {
     debounceEvent = (e) => {
         // console.log('debounce: ' + e.target.id);
         if (e.target.id === 'query') {
-            let interval;
-            clearTimeout(interval);
-            interval = setTimeout(() => {
-                interval = null;
-                this.queryUSDA();
-            }, 500);
+            // let interval;
+            // clearTimeout(interval);
+            // interval = setTimeout(() => {
+            //     interval = null;
+            //     this.queryUSDA();
+            // }, 500);
         } else {
             this.highlightWords();
             let interval;
@@ -179,11 +179,12 @@ class Home extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         if (document.activeElement.id === 'query' || document.activeElement.id === 'btn-search') {
-            // console.log('submit query');
             this.barcodeChange();
         } else {
-            // console.log('submit watchlist');
-            this.highlightWords();
+            if (this.state.theIngredients.indexOf('<button>') !== -1) {
+                // if we're not looking at a list of matches to a word query
+                this.highlightWords();
+            }
         }
     }
 
