@@ -19,7 +19,7 @@ class Home extends Component {
     componentDidMount () {
         const theWatchlist = localStorage.getItem("theWatchlist");
         const theQuery = localStorage.getItem("theQuery");
-        console.log('theQuery: ' + localStorage.getItem("theQuery"));
+        // console.log('theQuery: ' + localStorage.getItem("theQuery"));
         document.getElementById("watchlist").value = theWatchlist;
         document.getElementById("query").value = theQuery;
         this.setState({ theWatchlist: theWatchlist || 'fizzbuzz', theQuery: theQuery })
@@ -28,42 +28,58 @@ class Home extends Component {
     }
 
     barcodeChange = () => {
-        this.hideScanner();
-        localStorage.setItem("theQuery", document.getElementById("query").value);
-        console.log(document.getElementById("query").value);
-        this.queryUSDA();
+        if (document.activeElement.id !== 'watchlist') {
+            this.hideScanner();
+            this.storePrefs();
+            // localStorage.setItem("theQuery", document.getElementById("query").value);
+            // console.log(document.getElementById("query").value);
+            this.queryUSDA();
+        }
     }
 
     queryUSDA = () => {
+        // console.log('queryUSDA');
         if (Date.now() < timeout) {
             // console.log('too soon');
         } else {
             timeout = Date.now() + 1000;
 
-            document.getElementById('result').innerText = 'searching...';
+            // document.getElementById('result').innerText = 'searching...';
+            this.setState({ theName: '', theIngredients: '', theIngredientsHighlighted: 'searching...' })
             const theQuery = document.getElementById('query').value;
             API.queryUSDA(theQuery)
                 .then((result) => {
-                    if (result.data.length) {
-                        console.log('no result');
-                        document.getElementById('result').innerText = 'no result';
+                    if (result.data.length) { //undefined length means data
+                        this.setState({ theIngredientsHighlighted: 'no result' })
                     } else {
                         if (/^\d+$/.test(theQuery)) { // true if its numbers
                             const theName = result.data.foods[ 0 ].food.desc.name + ' ' + result.data.foods[ 0 ].food.desc.manu;
                             const theIngredients = result.data.foods[ 0 ].food.ing.desc;
                             this.setState({ theName: theName, theIngredients: theIngredients })
                             this.highlightWords();
-                            document.getElementById('result').innerHTML = '';
                         } else { // it was a word search
                             const theMatches = result.data.list.item;
                             if (theMatches.length <= 50) {
-                                document.getElementById('result').innerHTML = '<strong>Matches: ' + theMatches.length + '</strong></br>';
+                                const theResultCount = 'Matches: ' + theMatches.length;
+                                this.setState({ theName: theResultCount })
                             } else {
-                                document.getElementById('result').innerHTML = '<strong><em>More than 50 matches were returned, only showing the first 50</em></<strong></br>';
+                                const theResultCount = '<em>More than 50 matches were returned, only showing the first 50</em>';
+                                this.setState({ theName: theResultCount })
                             }
+                            let theMatchesList = '';
                             for (let i = 0; i < theMatches.length; i++) {
-                                document.getElementById('result').innerHTML += `<button name=${theMatches[ i ].ndbno} onclick="document.getElementById('query').value=this.name;document.getElementById('query').click()" class='list-item'>${theMatches[ i ].name}</button><br />`;
+                                theMatchesList += `<button name=${theMatches[ i ].ndbno} class='list-item'>${theMatches[ i ].name}</button><br />`;
                             }
+                            this.setState({ theIngredientsHighlighted: theMatchesList });
+                            this.attachListeners();
+                            // if (theMatches.length <= 50) {
+                            //     document.getElementById('result').innerHTML = '<strong>Matches: ' + theMatches.length + '</strong></br>';
+                            // } else {
+                            //     document.getElementById('result').innerHTML = '<strong><em>More than 50 matches were returned, only showing the first 50</em></<strong></br>';
+                            // }
+                            // for (let i = 0; i < theMatches.length; i++) {
+                            //     document.getElementById('result').innerHTML += `<button name=${theMatches[ i ].ndbno} onclick="document.getElementById('query').value=this.name;document.getElementById('query').click()" class='list-item'>${theMatches[ i ].name}</button><br />`;
+                            // }
                         }
                         return false;
                     }
@@ -72,10 +88,21 @@ class Home extends Component {
         }
     };
 
-    enterNdbnoAndQuery = (ndbno) => {
-        document.getElementById('query').value = ndbno;
-        this.queryUSDA();
+    attachListeners = () => {
+        var theButtons = document.querySelectorAll('.list-item');
+        for (var i = 0; i < theButtons.length; i++) {
+            var self = theButtons[ i ];
+            self.addEventListener('click', (event) => {
+                document.getElementById('query').value = event.target.name;
+                this.queryUSDA();
+            }, false);
+        }
     }
+
+    // enterNdbnoAndQuery = (ndbno) => {
+    //     document.getElementById('query').value = ndbno;
+    //     this.queryUSDA();
+    // }
 
     highlightWords = () => {
         let theText = this.state.theIngredients;
@@ -130,7 +157,7 @@ class Home extends Component {
     }
 
     debounceEvent = (e) => {
-        console.log(e.target.id);
+        // console.log('debounce: ' + e.target.id);
         if (e.target.id === 'query') {
             let interval;
             clearTimeout(interval);
@@ -139,28 +166,31 @@ class Home extends Component {
                 this.queryUSDA();
             }, 500);
         } else {
+            this.highlightWords();
             let interval;
             clearTimeout(interval);
             interval = setTimeout(() => {
                 interval = null;
                 this.storePrefs();
-            }, 500);
+            }, 250);
         }
     };
 
     handleSubmit = (event) => {
         event.preventDefault();
-        // if (event.target.id === 'query') {
-        this.barcodeChange();
-        // } else {
-
-        // }
+        if (document.activeElement.id === 'query' || document.activeElement.id === 'btn-search') {
+            // console.log('submit query');
+            this.barcodeChange();
+        } else {
+            // console.log('submit watchlist');
+            this.highlightWords();
+        }
     }
 
     storePrefs = () => {
         const theQuery = document.getElementById("query").value.trim();
         const theWatchlist = document.getElementById("watchlist").value.trim();
-        this.highlightWords();
+        // this.highlightWords();
         localStorage.setItem("theQuery", theQuery);
         localStorage.setItem("theWatchlist", theWatchlist);
         this.setState({ theQuery: theQuery, theWatchlist: theWatchlist });
@@ -199,14 +229,16 @@ class Home extends Component {
                 <br />
                 <section id='body-text'>
                     <form onSubmit={ this.handleSubmit }>
-                        <strong>Barcode:</strong> <input id='query' onChange={ this.debounceEvent } onClick={ this.barcodeChange } size="14"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button>
+                        <strong>Barcode:</strong> <input id='query' onChange={ this.debounceEvent } size="14"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button>
+                        {/* <strong>Barcode:</strong> <input id='query' onChange={ this.debounceEvent } onClick={ this.barcodeChange } size="14"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button> */ }
                         <br />
                         <strong>Watchlist:</strong> <input id='watchlist' onChange={ this.debounceEvent }></input>
                     </form>
                     <br />
                     <br />
 
-                    <div className='bold' width='100%'>{ this.state.theName }</div>
+                    {/* <div className='bold' width='100%'>{ this.state.theName }</div> */ }
+                    <div className='bold'>{ parse(this.state.theName) }</div>
                     <div>{ parse(this.state.theIngredientsHighlighted) }</div>
                     <div id='result' width='100%'></div>
                     <br />
