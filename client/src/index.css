@@ -144,6 +144,7 @@ button {
 
 #cancel {
   background-color: gray;
+  margin-bottom: 1%;
 }
 
 input {
@@ -220,4 +221,14 @@ input {
   margin: 2px 0;
   border: none;
   text-decoration: underline;
+}
+
+.search {
+  background-color: lightgray;
+  padding: 5px;
+}
+
+.watchlist {
+  background-color: skyblue;
+  padding: 5px;
 }

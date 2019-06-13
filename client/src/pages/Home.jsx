@@ -11,6 +11,7 @@ class Home extends Component {
             theQuery: '',
             theWatchlist: '',
             theName: '',
+            theNameClass: 'bold',
             theIngredients: '',
             theIngredientsHighlighted: ''
         };
@@ -115,7 +116,16 @@ class Home extends Component {
                 theText = theText.replace(theExpression, `<span class="highlight">${highlightWord.toUpperCase()}</span>`);
             }
         }
-        this.setState({ theIngredientsHighlighted: theText });
+        let theNameClass = '';
+        if (theText.indexOf('<span') !== -1) {
+            theNameClass = 'highlight';
+        } else {
+            theNameClass = 'bold';
+        }
+        this.setState({ theIngredientsHighlighted: theText, theNameClass: theNameClass });
+        // setTimeout(() => {
+        //     console.log(this.state.theNameClass);
+        // }, 250);
     }
 
     showScanner = () => {
@@ -226,23 +236,20 @@ class Home extends Component {
                 <section id="container" className="container">
                     <div id="interactive" className="viewport"></div>
                 </section>
-                <button id='scan' onClick={ this.reload_js }>Scan</button> <button id='cancel' onClick={ this.hideScanner }>Cancel</button>
+                <button id='scan' onClick={ this.reload_js }>Scan Barcode</button> <button id='cancel' onClick={ this.hideScanner }>Cancel Scan</button>
                 <br />
                 <section id='body-text'>
                     <form onSubmit={ this.handleSubmit }>
-                        <strong>Barcode:</strong> <input id='query' onChange={ this.debounceEvent } size="14"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button>
+                        <div class='search'><strong>Barcode or Name search:</strong><br /><input id='query' onChange={ this.debounceEvent } size="14"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button></div>
                         {/* <strong>Barcode:</strong> <input id='query' onChange={ this.debounceEvent } onClick={ this.barcodeChange } size="14"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button> */ }
                         <br />
-                        <strong>Watchlist:</strong> <input id='watchlist' onChange={ this.debounceEvent }></input>
+                        <div class='watchlist'><strong>Watchlist (separate with space):</strong><br /><input id='watchlist' onChange={ this.debounceEvent }></input></div>
                     </form>
-                    <br />
-                    <br />
-
-                    {/* <div className='bold' width='100%'>{ this.state.theName }</div> */ }
-                    <div className='bold'>{ parse(this.state.theName) }</div>
+                    <hr />
+                    <div className={ this.state.theNameClass }>{ parse(this.state.theName) }</div>
                     <div>{ parse(this.state.theIngredientsHighlighted) }</div>
                     <div id='result' width='100%'></div>
-                    <br />
+                    <hr />
                     <strong>Examples:</strong>
                     <br />
                     <button onClick={ this.granola }>Granola</button> <button onClick={ this.bread }>Bread</button> <button onClick={ this.soup }>Soup</button> <button onClick={ this.cornbread }>Cornbread</button>
@@ -250,7 +257,6 @@ class Home extends Component {
                 <div className="bottombar">
                     &copy;2019 <a id="desmondmullencomlink" href="https://desmondmullen.com" target="_blank" rel="noopener noreferrer">desmondmullen.com</a>
                 </div>
-
             </div>
         );
     }
