@@ -106,7 +106,7 @@ class Home extends Component {
 
     highlightWords = () => {
         let theText = this.state.theIngredients;
-        let theWatchlist = this.state.theWatchlist;
+        const theWatchlist = document.getElementById("watchlist").value.trim();
         let theWordsToHighlight = theWatchlist.split(' ');
         for (let i = 0; i < theWordsToHighlight.length; i++) {
             let highlightWord = theWordsToHighlight[ i ].trim();
