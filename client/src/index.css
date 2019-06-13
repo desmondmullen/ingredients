@@ -228,6 +228,7 @@ input {
   margin: 2px 0;
   border: none;
   text-decoration: underline;
+  text-align: left;
 }
 
 .search {
