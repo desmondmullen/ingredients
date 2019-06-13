@@ -203,6 +203,10 @@ input {
   }
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .highlight {
   /* color: red; */
   background-color: #fff10a;

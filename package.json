@@ -33,9 +33,12 @@
     "dotenv": "^8.0.0",
     "express": "^4.17.0",
     "express-session": "^1.16.1",
+    "html-react-parser": "^0.7.1",
     "if-env": "^1.0.4",
     "morgan": "^1.9.1",
     "path": "^0.12.7",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "routes": "^2.1.0"
   }
 }

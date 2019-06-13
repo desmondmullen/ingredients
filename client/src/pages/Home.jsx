@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import API from "../utils/API";
+import parse from 'html-react-parser';
 
 let timeout = Date.now() + 1000;
 
@@ -7,22 +8,28 @@ class Home extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            watchlist: '',
-            theResult: ''
+            theQuery: '',
+            theWatchlist: '',
+            theName: '',
+            theIngredients: '',
+            theIngredientsHighlighted: ''
         };
     };
 
     componentDidMount () {
-        document.getElementById("watchlist").value = localStorage.getItem("watchlist");
-        this.setState({ watchlist: localStorage.getItem("watchlist") || 'fizzbuzz' })
-        document.getElementById("query").value = localStorage.getItem("query");
+        const theWatchlist = localStorage.getItem("theWatchlist");
+        const theQuery = localStorage.getItem("theQuery");
+        console.log('theQuery: ' + localStorage.getItem("theQuery"));
+        document.getElementById("watchlist").value = theWatchlist;
+        document.getElementById("query").value = theQuery;
+        this.setState({ theWatchlist: theWatchlist || 'fizzbuzz', theQuery: theQuery })
         const theScanButton = document.getElementById('scan');
         theScanButton.style.display = 'none';
     }
 
     barcodeChange = () => {
         this.hideScanner();
-        localStorage.setItem("query", document.getElementById("query").value);
+        localStorage.setItem("theQuery", document.getElementById("query").value);
         console.log(document.getElementById("query").value);
         this.queryUSDA();
     }
@@ -31,12 +38,10 @@ class Home extends Component {
         if (Date.now() < timeout) {
             // console.log('too soon');
         } else {
-            // console.log('okay');
             timeout = Date.now() + 1000;
 
             document.getElementById('result').innerText = 'searching...';
             const theQuery = document.getElementById('query').value;
-            // const theWatchlist = ((document.getElementById('watchlist').value).toUpperCase()).split(' ');
             API.queryUSDA(theQuery)
                 .then((result) => {
                     if (result.data.length) {
@@ -45,8 +50,10 @@ class Home extends Component {
                     } else {
                         if (/^\d+$/.test(theQuery)) { // true if its numbers
                             const theName = result.data.foods[ 0 ].food.desc.name + ' ' + result.data.foods[ 0 ].food.desc.manu;
-                            const theIngredients = this.highlightWords(result.data.foods[ 0 ].food.ing.desc);
-                            document.getElementById('result').innerHTML = '<strong>' + theName + '</strong><br />' + theIngredients;
+                            const theIngredients = result.data.foods[ 0 ].food.ing.desc;
+                            this.setState({ theName: theName, theIngredients: theIngredients })
+                            this.highlightWords();
+                            document.getElementById('result').innerHTML = '';
                         } else { // it was a word search
                             const theMatches = result.data.list.item;
                             if (theMatches.length <= 50) {
@@ -70,15 +77,18 @@ class Home extends Component {
         this.queryUSDA();
     }
 
-    highlightWords = (theText) => {
-        // let theText = document.getElementById('result').innerHTML;
-        let theWordsToHighlight = this.state.watchlist.split(' ');
+    highlightWords = () => {
+        let theText = this.state.theIngredients;
+        let theWatchlist = this.state.theWatchlist;
+        let theWordsToHighlight = theWatchlist.split(' ');
         for (let i = 0; i < theWordsToHighlight.length; i++) {
             let highlightWord = theWordsToHighlight[ i ].trim();
-            var theExpression = new RegExp(highlightWord, "gi");
-            theText = theText.replace(theExpression, `<span class="highlight">${highlightWord.toUpperCase()}</span>`);
+            if (highlightWord.length > 1 && highlightWord.indexOf("..") < 0) {
+                var theExpression = new RegExp(highlightWord, "gi");
+                theText = theText.replace(theExpression, `<span class="highlight">${highlightWord.toUpperCase()}</span>`);
+            }
         }
-        return theText;
+        this.setState({ theIngredientsHighlighted: theText });
     }
 
     showScanner = () => {
@@ -148,11 +158,12 @@ class Home extends Component {
     }
 
     storePrefs = () => {
-        const key = 'watchlist';
-        const value = document.getElementById("watchlist").value.trim();
-        this.queryUSDA();
-        localStorage.setItem("watchlist", value);
-        this.setState({ [ key ]: value });
+        const theQuery = document.getElementById("query").value.trim();
+        const theWatchlist = document.getElementById("watchlist").value.trim();
+        this.highlightWords();
+        localStorage.setItem("theQuery", theQuery);
+        localStorage.setItem("theWatchlist", theWatchlist);
+        this.setState({ theQuery: theQuery, theWatchlist: theWatchlist });
     }
 
     granola = () => {
@@ -194,6 +205,9 @@ class Home extends Component {
                     </form>
                     <br />
                     <br />
+
+                    <div className='bold' width='100%'>{ this.state.theName }</div>
+                    <div>{ parse(this.state.theIngredientsHighlighted) }</div>
                     <div id='result' width='100%'></div>
                     <br />
                     <strong>Examples:</strong>
