@@ -217,7 +217,7 @@ class Home extends Component {
         return (
             <div>
                 <div className="topbar">
-                    FoodVetter<button id='btn-quickstart' onClick={ e => { this.showModal() } }>Quick Start</button>
+                    <span className='title'>FoodVetter</span><button id='btn-quickstart' onClick={ e => { this.showModal() } }>Quick Start</button>
                 </div>
                 <Modal show={ this.state.show } title='Quick Start'>
                     Scan a food barcode for a list of ingredients. Any word(s) you have entered in the <em>Watchlist</em> will instantly be highlighted in the list of ingredients.<br /><br />Add individual words like "salt" or "wheat" or "fructose" to your Watchlist - anything you want <em>FoodVetter</em> to highlight for you.<br />When adding words, separate them with a space but no comma.<br /><br />You can manually enter a barcode number to seartch. Better yet, enter part of a product name to search by name!<br /><br /><button className='modal-btn' onClick={ e => { this.showModal() } }>Close</button>

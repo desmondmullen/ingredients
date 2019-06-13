@@ -265,3 +265,9 @@ input {
   /* height: 1rem; */
   font-size: medium;
 }
+
+@media screen and (max-width: 500px) {
+  .topbar {
+    text-align: left;
+  }
+}
