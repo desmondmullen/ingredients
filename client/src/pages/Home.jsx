@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import API from "../utils/API";
-import BtnExample from '../components/BtnExample';
-
 
 let timeout = Date.now() + 1000;
 
@@ -9,14 +7,14 @@ class Home extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            watchFor: '',
+            watchlist: '',
             theResult: ''
         };
     };
 
     componentDidMount () {
-        document.getElementById("alert").value = localStorage.getItem("alert");
-        this.setState({ watchFor: localStorage.getItem("alert") || 'fizzbuzz' })
+        document.getElementById("watchlist").value = localStorage.getItem("watchlist");
+        this.setState({ watchlist: localStorage.getItem("watchlist") || 'fizzbuzz' })
         document.getElementById("query").value = localStorage.getItem("query");
         const theScanButton = document.getElementById('scan');
         theScanButton.style.display = 'none';
@@ -38,7 +36,7 @@ class Home extends Component {
 
             document.getElementById('result').innerText = 'searching...';
             const theQuery = document.getElementById('query').value;
-            // const theAlerts = ((document.getElementById('alert').value).toUpperCase()).split(' ');
+            // const theWatchlist = ((document.getElementById('watchlist').value).toUpperCase()).split(' ');
             API.queryUSDA(theQuery)
                 .then((result) => {
                     if (result.data.length) {
@@ -74,9 +72,9 @@ class Home extends Component {
 
     highlightWords = (theText) => {
         // let theText = document.getElementById('result').innerHTML;
-        let theWordsToHighlight = this.state.watchFor.split(' ');
+        let theWordsToHighlight = this.state.watchlist.split(' ');
         for (let i = 0; i < theWordsToHighlight.length; i++) {
-            let highlightWord = theWordsToHighlight[ i ];
+            let highlightWord = theWordsToHighlight[ i ].trim();
             var theExpression = new RegExp(highlightWord, "gi");
             theText = theText.replace(theExpression, `<span class="highlight">${highlightWord.toUpperCase()}</span>`);
         }
@@ -150,10 +148,10 @@ class Home extends Component {
     }
 
     storePrefs = () => {
-        const key = 'watchFor';
-        const value = document.getElementById("alert").value.trim();
+        const key = 'watchlist';
+        const value = document.getElementById("watchlist").value.trim();
         this.queryUSDA();
-        localStorage.setItem("alert", value);
+        localStorage.setItem("watchlist", value);
         this.setState({ [ key ]: value });
     }
 
@@ -192,7 +190,7 @@ class Home extends Component {
                     <form onSubmit={ this.handleSubmit }>
                         <strong>Barcode:</strong> <input id='query' onChange={ this.debounceEvent } onClick={ this.barcodeChange } size="14"></input> <button id='btn-search' onClick={ this.barcodeChange }>Search</button>
                         <br />
-                        <strong>Watch for:</strong> <input id='alert' onChange={ this.debounceEvent }></input>
+                        <strong>Watchlist:</strong> <input id='watchlist' onChange={ this.debounceEvent }></input>
                     </form>
                     <br />
                     <br />
