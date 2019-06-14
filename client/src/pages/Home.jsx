@@ -220,7 +220,7 @@ class Home extends Component {
                     <span className='title'>FoodVetter</span><button id='btn-quickstart' onClick={ e => { this.showModal() } }>Quick Start</button>
                 </div>
                 <Modal show={ this.state.show } title='Quick Start'>
-                    Scan a food barcode for a list of ingredients. Any word(s) you have entered in the <em>Watchlist</em> will instantly be highlighted in the list of ingredients.<br /><br />Add individual words like "salt" or "wheat" or "fructose" to your Watchlist - anything you want <em>FoodVetter</em> to highlight for you.<br />When adding words, separate them with a space but no comma.<br /><br />You can manually enter a barcode number to seartch. Better yet, enter part of a product name to search by name!<br /><br /><button className='modal-btn' onClick={ e => { this.showModal() } }>Close</button>
+                    Scan a food barcode for a list of ingredients. Any word(s) you have entered in the <em>Watchlist</em> will instantly be highlighted in the list of ingredients.<br /><br />Add individual words like "salt" or "wheat" or "fructose" to your Watchlist - anything you want <em>FoodVetter</em> to highlight for you.<br />When adding words, separate them with a space but no comma.<br /><br />You can manually enter a barcode number to search. Better yet, enter part of a product name to search by name!<br /><br /><button className='modal-btn' onClick={ e => { this.showModal() } }>Close</button>
                 </Modal>
                 <section id="container" className="container">
                     <div id="interactive" className="viewport"></div>
@@ -237,7 +237,7 @@ class Home extends Component {
                     <hr />
                     <div className={ this.state.theNameClass }>{ parse(this.state.theName) }</div>
                     <div>{ parse(this.state.theIngredientsHighlighted) }</div>
-                    <div id='result' width='100%'></div>
+                    {/* <div id='result' width='100%'></div> */ }
                     <hr />
                     <br />
                     <strong>Examples:</strong>
