@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/desmondmullen/ingredients#readme",
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "concurrently": "^4.1.0",
     "connect-mongo": "^2.0.3",
     "dotenv": "^8.0.0",
